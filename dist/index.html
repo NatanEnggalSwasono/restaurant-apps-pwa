@@ -1,0 +1,37 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Dish Detective</title><script defer="defer" src="app.bundle.js"></script></head><body><a href="#maincontent" class="skip-link">Menuju ke konten utama</a><nav class="navbar"><a href="index.html" class="logo">Dish Detective</a> <a id="hamburger" href="#">☰</a><div class="nav-list"><ul><li class="nav_item"><a href="index.html">Home</a></li><li class="nav_item"><a href="#">Favorite</a></li><li class="nav_item"><a href="https://www.linkedin.com/in/natan-enggal-swasono-34b285249/">About Us</a></li></ul></div></nav><header><div class="banner"><div class="banner_text"><h1 tabindex="0" class="banner_title">Solving the mystery of delicious food, one dish at a time.</h1><div><a class="button" href="#searching">CHECK NOW</a></div></div></div></header><main id="maincontent"><section class="content"><div class="headline" id="searching"><h1 tabindex="0" class="headline_title">Dish Detective</h1><p tabindex="0" class="headline_info">We help foodies discover the best dining experiences in our local area. Using a combination of user reviews and expert recommendations. DishDetective is your go-to resource for discovering delicious dishes and unforgettable dining experiences.</p></div><div class="content-post" id="resto-content"></div></section></main><footer><h3>&copy; 2023 Natan Enggal Swasono - Dicoding Submission</h3></footer><script>const menuHamburger = document.querySelector("#hamburger");
+      const navList = document.querySelector(".nav-list");
+      const mainElement = document.querySelector(".nav-list");
+
+      menuHamburger.addEventListener("click", (event) => {
+        navList.classList.toggle("open");
+        event.stopPropagation();
+      });
+
+      mainElement.addEventListener("click", (event) => {
+        navList.classList.remove("open");
+        event.stopPropagation();
+      });
+
+      fetch("https://restaurant-api.dicoding.dev/list")
+        .then((response) => response.json())
+        .then((data) => {
+          let restoContent = document.getElementById("resto-content");
+          let restos = "";
+          data.restaurants.forEach((restaurants) => {
+            restos += `
+        <article class="post">
+          <img tabindex="0" class="post-img"
+               src="https://restaurant-api.dicoding.dev/images/medium/${restaurants.pictureId}"
+               alt="Gambar Restoran ${restaurants.name}">
+          <div class="post-content">
+            <h1 tabindex="0" class="post-content-title">${restaurants.name}</h1>
+            <h2 tabindex="0" class="post-content-city">${restaurants.city}</h2>
+            <h2 tabindex="0" class="post-content-rating">Rating: ${restaurants.rating}</h2>
+            <p tabindex="0" class="post-content-desc">${restaurants.description}</p>
+          </div>
+        </article>`;
+          });
+
+          restoContent.innerHTML = restos;
+        })
+        .catch((error) => console.error(error));</script></body></html>
